@@ -1,0 +1,17 @@
+name: Test Action
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - labeled
+jobs:
+  myjob:
+    runs-on: ubuntu-latest
+    name: Test
+    if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
+    steps:
+      - name: detect label
+        run: |
+          curl https://api.github.com/
