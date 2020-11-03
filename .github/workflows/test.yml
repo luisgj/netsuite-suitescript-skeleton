@@ -25,7 +25,6 @@ jobs:
   signOff:
     runs-on: ubuntu-latest
     name: Check for sign-off
-    needs: buildToStage
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'signedOff') }}
     steps:
       - name: fail check
