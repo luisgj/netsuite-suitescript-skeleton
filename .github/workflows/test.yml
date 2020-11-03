@@ -24,7 +24,7 @@ jobs:
   buildStage:
     runs-on: ubuntu-latest
     name: Send to Stage
-    needs: stageReadiness
+    if: contains(github.event.pull_request.labels.*.name, 'stageReady')
     steps:
       - name: check for 
         run: |
