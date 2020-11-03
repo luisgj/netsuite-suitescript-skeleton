@@ -27,3 +27,4 @@ debugger/*.js
 # NetSuite SDF
 .sdf
 error.log
+.vscode

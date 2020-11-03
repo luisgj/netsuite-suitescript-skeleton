@@ -1,17 +1,41 @@
-name: Test Action
-
+name: Bitso Workflow
 on:
   pull_request:
     branches:
-      - main
+      - master
     types:
       - labeled
+      - unlabeled
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - ready_for_review
 jobs:
-  myjob:
+  stageReadiness:
     runs-on: ubuntu-latest
-    name: Test
-    if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
+    name: Check for Stage Readiness
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'stageReady') }}
     steps:
-      - name: detect label
+      - name: skip or fail if no tag is found 
         run: |
-          curl https://api.github.com/
+          echo "Send this to stage first."
+          exit 1
+  buildStage:
+    runs-on: ubuntu-latest
+    name: Send to Stage
+    if: contains(github.event.pull_request.labels.*.name, 'stageReady')
+    steps:
+      - name: init runner to build image 
+        run: |
+          curl https://api.github.com
+          echo "Sent runner to build image."
+  signOff:
+    runs-on: ubuntu-latest
+    name: Check for Sign-off
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'signedOff') }}
+    steps:
+      - name: fail check
+        run: |
+          echo "Must be signed off before merging"
+          exit 1
