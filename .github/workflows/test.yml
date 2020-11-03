@@ -8,7 +8,7 @@ jobs:
   buildToStage:
     runs-on: ubuntu-latest
     name: Build for stage
-    if: !contains(github.event.pull_request.labels.*.name, 'stageReady')
+    if: ! contains(github.event.pull_request.labels.*.name, 'stageReady')
     steps:
       - name: fail check
         run: |
