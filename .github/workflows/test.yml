@@ -26,7 +26,7 @@ jobs:
     name: Send to Stage
     if: contains(github.event.pull_request.labels.*.name, 'stageReady')
     steps:
-      - name: check for 
+      - name: init runner to build image 
         run: |
           curl https://api.github.com
           echo "Sent runner to build image."
