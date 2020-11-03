@@ -14,3 +14,13 @@ jobs:
         run: |
           echo "Send this to stage first."
           exit 1
+  signOff:
+    runs-on: ubuntu-latest
+    name: Check for sign-off
+    needs: buildToStage
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'signedOff') }}
+    steps:
+      - name: fail check
+        run: |
+          echo "Must be signed off before merging"
+          exit 1
