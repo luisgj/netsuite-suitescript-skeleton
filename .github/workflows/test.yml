@@ -1,17 +1,16 @@
-name: Test Action
+name: Bitso Workflow
 
 on:
   pull_request:
     branches:
       - master
-    types:
-      - labeled
 jobs:
-  myjob:
+  buildToStage:
     runs-on: ubuntu-latest
-    name: Test
-    if: contains(github.event.pull_request.labels.*.name, 'NoMerge')
+    name: Build for stage
+    if: !contains(github.event.pull_request.labels.*.name, 'stageReady')
     steps:
-      - name: detect label
+      - name: fail check
         run: |
-          curl https://api.github.com/
+          echo "Send this to stage first."
+          exit 1
