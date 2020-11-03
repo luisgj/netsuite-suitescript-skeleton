@@ -1,5 +1,4 @@
 name: Bitso Workflow
-
 on:
   pull_request:
     branches:
@@ -13,18 +12,27 @@ on:
       - synchronize
       - ready_for_review
 jobs:
-  buildToStage:
+  stageReadiness:
     runs-on: ubuntu-latest
-    name: Build for stage
+    name: Check for Stage Readiness
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'stageReady') }}
     steps:
-      - name: fail check
+      - name: skip or fail if no tag is found 
         run: |
           echo "Send this to stage first."
           exit 1
+  buildStage:
+    runs-on: ubuntu-latest
+    name: Send to Stage
+    needs: stageReadiness
+    steps:
+      - name: check for 
+        run: |
+          curl https://api.github.com
+          echo "Sent runner to build image."
   signOff:
     runs-on: ubuntu-latest
-    name: Check for sign-off
+    name: Check for Sign-off
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'signedOff') }}
     steps:
       - name: fail check
